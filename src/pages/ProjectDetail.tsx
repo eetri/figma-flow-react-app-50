@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { MessageSquare, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -74,49 +73,49 @@ const ProjectDetail = () => {
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
         <div className="flex justify-between items-start">
           <div>
-            <h1 className="text-2xl font-bold">{projectData.name}</h1>
-            <p className="text-sm text-gray-500">Date: {projectData.date}</p>
+            <h1 className="text-2xl font-bold">{project.name}</h1>
+            <p className="text-sm text-gray-500">Date: {project.date}</p>
           </div>
-          {getStatusBadge(projectData.status)}
+          {getStatusBadge(project.status)}
         </div>
         
-        <p className="text-gray-700 mt-4">{projectData.description}</p>
+        <p className="text-gray-700 mt-4">{project.description}</p>
         
         <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Information</h2>
           <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
             <div className="flex">
               <dt className="font-medium w-40">Program</dt>
-              <dd>: {projectData.program}</dd>
+              <dd>: {project.program}</dd>
             </div>
             <div className="flex">
               <dt className="font-medium w-40">Started Date</dt>
-              <dd>: {projectData.startedDate}</dd>
+              <dd>: {project.startedDate}</dd>
             </div>
             <div className="flex">
               <dt className="font-medium w-40">Identification No.</dt>
-              <dd>: {projectData.identificationNo}</dd>
+              <dd>: {project.identificationNo}</dd>
             </div>
             <div className="flex">
               <dt className="font-medium w-40">Deadline Date</dt>
-              <dd>: {projectData.deadlineDate}</dd>
+              <dd>: {project.deadlineDate}</dd>
             </div>
           </dl>
           <div className="flex mt-2">
             <dt className="font-medium w-40">Selected Contractor:</dt>
-            <dd>{projectData.selectedContractor}</dd>
+            <dd>{project.selectedContractor}</dd>
           </div>
         </div>
         
         <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Description:</h2>
-          <p className="text-gray-700 whitespace-pre-line">{projectData.fullDescription}</p>
+          <p className="text-gray-700 whitespace-pre-line">{project.fullDescription}</p>
         </div>
         
         <div className="mt-8">
           <h2 className="text-lg font-semibold mb-4">Documents Required:</h2>
           <div className="flex flex-wrap gap-2">
-            {projectData.documents.map((doc, index) => (
+            {project.documents.map((doc, index) => (
               <div key={index} className="flex items-center px-3 py-1 bg-gray-50 rounded-full border border-gray-200">
                 <svg className="w-4 h-4 text-red-500 mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clipRule="evenodd" />
@@ -141,7 +140,7 @@ const ProjectDetail = () => {
       
       <div className="bg-gray-50 p-6 rounded-lg">
         <h2 className="text-lg font-semibold mb-4">Remarks:</h2>
-        <p className="text-gray-700 whitespace-pre-line">{projectData.remarks}</p>
+        <p className="text-gray-700 whitespace-pre-line">{project.remarks}</p>
       </div>
     </div>
   );
