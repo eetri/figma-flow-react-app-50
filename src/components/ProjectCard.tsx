@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,8 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ id, name, date, description, status, documents }: ProjectCardProps) => {
+  const navigate = useNavigate();
+
   const getStatusBadge = () => {
     switch (status) {
       case "approve":
@@ -38,12 +40,17 @@ const ProjectCard = ({ id, name, date, description, status, documents }: Project
     }
   };
 
+  const handleProjectClick = () => {
+    navigate(`/project-detail/${id}`);
+  };
+
   return (
-    <div className="p-6 bg-white rounded-lg shadow-sm mb-4 border border-gray-100">
+    <div 
+      className="p-6 bg-white rounded-lg shadow-sm mb-4 border border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors"
+      onClick={handleProjectClick}
+    >
       <div className="flex justify-between items-start mb-1">
-        <Link to={`/project-detail/${id}`} className="text-xl font-semibold hover:underline">
-          {name}
-        </Link>
+        <div className="text-xl font-semibold hover:underline">{name}</div>
         {getStatusBadge()}
       </div>
       <div className="text-sm text-gray-500 mb-2">Date: {date}</div>
@@ -68,11 +75,11 @@ const ProjectCard = ({ id, name, date, description, status, documents }: Project
       <div className="flex justify-end">
         <Button 
           variant="secondary" 
-          className="bg-gray-900 text-white hover:bg-gray-800"
+          className="bg-gray-900 text-white hover:bg-gray-800 rounded-full px-6"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            window.location.href = `/open-discussion/${id}`;
+            navigate(`/open-discussion/${id}`);
           }}
         >
           <MessageSquare className="h-4 w-4 mr-2" />
@@ -84,3 +91,4 @@ const ProjectCard = ({ id, name, date, description, status, documents }: Project
 };
 
 export default ProjectCard;
+
