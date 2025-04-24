@@ -2,20 +2,44 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import Comment from "@/components/Comment";
 
-type ProjectStatus = "approve" | "pending" | "rejected";
+// Sample data
+const discussionData = {
+  projectName: "Project Name",
+  status: "approve" as const,
+  comments: [
+    {
+      id: "1",
+      author: "Ulopa",
+      authorType: "Author" as const,
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      date: new Date("2024-01-17T14:10:00"),
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix",
+    },
+    {
+      id: "2",
+      author: "Qwerty",
+      authorType: "Maintainer" as const,
+      content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      date: new Date("2024-01-17T15:30:00"),
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Charlie",
+    }
+  ]
+};
 
 const OpenDiscussionPage = () => {
   const { id } = useParams<{ id: string }>();
   const [comment, setComment] = useState("");
   const { toast } = useToast();
+  const [sortNewest, setSortNewest] = useState(true);
 
-  // This would typically come from an API call using the id
-  const projectName = "Project name";
-  const projectStatus = "approve" as ProjectStatus;
+  const sortedComments = [...discussionData.comments].sort((a, b) => 
+    sortNewest ? b.date.getTime() - a.date.getTime() : a.date.getTime() - b.date.getTime()
+  );
 
   const handleSubmitComment = () => {
     if (!comment.trim()) {
@@ -27,62 +51,50 @@ const OpenDiscussionPage = () => {
       return;
     }
     
-    // Here you would typically submit the comment to an API
-    console.log("Submitting comment:", comment, "for project:", id);
-    
-    // Show success message
     toast({
       title: "Comment submitted",
       description: "Your comment has been posted successfully",
     });
     
-    // Clear the comment field
     setComment("");
   };
 
-  const getStatusBadge = (status: ProjectStatus) => {
-    switch (status) {
-      case "approve":
-        return (
-          <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200 hover:bg-green-100">
+  return (
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <div className="flex justify-between items-center mb-2">
+          <div>
+            <h1 className="text-2xl font-semibold">{discussionData.projectName}</h1>
+            <p className="text-gray-600">Discussion on {discussionData.projectName}</p>
+          </div>
+          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
             Approve
           </Badge>
-        );
-      case "pending":
-        return (
-          <Badge variant="outline" className="bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-100">
-            Pending
-          </Badge>
-        );
-      case "rejected":
-        return (
-          <Badge variant="outline" className="bg-red-100 text-red-800 border-red-200 hover:bg-red-100">
-            Rejected
-          </Badge>
-        );
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="bg-white p-6 rounded-xl shadow-sm">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">{projectName}</h2>
-          <p className="text-gray-600 text-sm">Discussion on {projectName}</p>
         </div>
-        {getStatusBadge(projectStatus)}
-      </div>
 
-      <div className="space-y-4">
-        <div className="flex justify-end gap-2">
-          <Button variant="outline" size="sm" className="rounded-full">
+        <div className="flex justify-end gap-2 my-6">
+          <Button 
+            variant={sortNewest ? "default" : "outline"} 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => setSortNewest(true)}
+          >
             Newest
           </Button>
-          <Button variant="outline" size="sm" className="rounded-full">
+          <Button 
+            variant={!sortNewest ? "default" : "outline"} 
+            size="sm" 
+            className="rounded-full"
+            onClick={() => setSortNewest(false)}
+          >
             Oldest
           </Button>
+        </div>
+
+        <div className="space-y-6 mb-6">
+          {sortedComments.map((comment) => (
+            <Comment key={comment.id} {...comment} />
+          ))}
         </div>
 
         <div className="bg-gray-50 rounded-xl p-6">
@@ -98,27 +110,11 @@ const OpenDiscussionPage = () => {
             
             <div className="p-3 border-t border-gray-200 bg-white flex justify-between items-center">
               <div className="flex gap-2">
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">A</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">📎</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">🔗</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">📷</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">📊</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">😀</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="rounded-full h-8 w-8">
-                  <span className="text-gray-500">⚙️</span>
-                </Button>
+                {["A", "📎", "🔗", "📷", "📊", "😀", "⚙️"].map((icon, index) => (
+                  <Button key={index} size="icon" variant="ghost" className="rounded-full h-8 w-8">
+                    <span className="text-gray-500">{icon}</span>
+                  </Button>
+                ))}
               </div>
               
               <div className="flex items-center gap-2">
