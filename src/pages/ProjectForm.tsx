@@ -1,6 +1,6 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,9 +35,9 @@ const ProjectForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Normally would validate and submit data here
     console.log("Form submitted:", formData);
-    navigate("/recent-projects");
+    toast.success("Project submitted successfully!");
+    navigate("/project-detail/new", { state: { status: "pending" } });
   };
 
   const handleReset = () => {

@@ -1,7 +1,8 @@
-
-import { useParams, useNavigate } from "react-router-dom";
-import { MessageSquare } from "lucide-react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { MessageSquare, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 // Sample project data
 const projectData = {
@@ -23,9 +24,15 @@ const projectData = {
 const ProjectDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   
-  // In a real application, you would fetch the project data based on the ID
-  const project = projectData;
+  useEffect(() => {
+    if (location.state?.status === "pending") {
+      toast("Project is pending review", {
+        description: "You will be notified once it's approved"
+      });
+    }
+  }, [location.state]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -54,6 +61,15 @@ const ProjectDetail = () => {
 
   return (
     <div>
+      <Button 
+        variant="ghost" 
+        onClick={() => navigate('/')}
+        className="mb-4"
+      >
+        <ArrowLeft className="h-4 w-4 mr-2" />
+        Back to Akhtiyar
+      </Button>
+
       <div className="bg-gray-50 p-6 rounded-lg mb-6">
         <div className="flex justify-between items-start">
           <div>
