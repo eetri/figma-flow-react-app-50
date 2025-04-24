@@ -4,16 +4,41 @@ import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 
 type ProjectStatus = "approve" | "pending" | "rejected";
 
 const OpenDiscussionPage = () => {
   const { id } = useParams<{ id: string }>();
   const [comment, setComment] = useState("");
+  const { toast } = useToast();
 
   // This would typically come from an API call using the id
   const projectName = "Project name";
   const projectStatus = "approve" as ProjectStatus;
+
+  const handleSubmitComment = () => {
+    if (!comment.trim()) {
+      toast({
+        title: "Comment cannot be empty",
+        description: "Please enter a comment before submitting",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Here you would typically submit the comment to an API
+    console.log("Submitting comment:", comment, "for project:", id);
+    
+    // Show success message
+    toast({
+      title: "Comment submitted",
+      description: "Your comment has been posted successfully",
+    });
+    
+    // Clear the comment field
+    setComment("");
+  };
 
   const getStatusBadge = (status: ProjectStatus) => {
     switch (status) {
