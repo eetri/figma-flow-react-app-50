@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -112,7 +111,7 @@ const ProjectDetail = () => {
           <div className="mt-4">
             <Button 
               variant="secondary" 
-              className="bg-gray-900 text-white hover:bg-gray-800"
+              className="bg-gray-900 text-white hover:bg-gray-800 rounded-full px-6"
               onClick={() => navigate(`/open-discussion/${id}`)}
             >
               <MessageSquare className="h-4 w-4 mr-2" />
